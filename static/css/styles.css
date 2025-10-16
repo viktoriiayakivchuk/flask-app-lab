@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    --background-color: #121212;
+    --surface-color: #1E1E1E;
+    --primary-text-color: #E0E0E0;
+    --secondary-text-color: #A0A0A0;
+    --accent-color: #BB86FC;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+    padding-bottom: 80px;
+}
+
+.navbar, footer {
+    background-color: var(--surface-color) !important;
+    border-color: #2c2c2c !important;
+}
+
+.navbar-brand, .nav-link, footer p {
+    color: var(--primary-text-color) !important;
+}
+
+.nav-link:hover {
+    color: var(--accent-color) !important;
+}
+
+h1 {
+    font-weight: 700;
+    color: #ffffff;
+}
+h2 {
+    font-weight: 600;
+    color: var(--accent-color);
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    margin-top: 1.5rem;
+}
+
+main.container {
+    background-color: var(--surface-color);
+    padding: 2.5rem;
+    border-radius: 8px;
+    border: 1px solid #2c2c2c;
+}
+
+.rounded-circle {
+    border: 3px solid var(--accent-color);
+    padding: 4px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li::before {
+    content: "▹";
+    color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

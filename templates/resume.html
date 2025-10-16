@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row align-items-center">
+    <div class="col-md-4 text-center">
+        <img src="{{ url_for('static', filename='images/my_photo.jpg') }}" class="img-fluid rounded-circle shadow-sm" alt="Моє фото">
+    </div>
+    <div class="col-md-8">
+        <h1>Вікторія Яківчук</h1>
+        <p class="lead">Студентка КНУВС</p>
+    </div>
+</div>
+
+<hr class="my-4">
+
+<section>
+    <h2>Про себе</h2>
+    <p>Студентка, яка прагне розвиватися у сфері веб-розробки. Цілеспрямована, відповідальна, швидко навчаюсь новому та прагну застосовувати теоретичні знання на практиці для створення якісних програмних продуктів.</p>
+</section>
+
+<section class="mt-4">
+    <h2>Освіта</h2>
+    <p><strong>Івано-Франківський фаховий коледж Прикарпатського національного університету імені Василя Стефаника</strong><br>
+    Спеціальність: Прикладна математика<br>
+    (2020 - 2024)</p>
+    <p><strong>Карпатський національний університет імені Василя Стефаника</strong><br>
+    Спеціальність: Інженерія програмного забезпечення<br>
+    (2024 - 2027)</p>
+</section>
+
+<section class="mt-4">
+    <h2>Навички</h2>
+    <ul>
+        <li>Об'єктно-орієнтоване програмування</li>
+        <li>Робота з базами даних (SQL)</li>
+        <li>Системи контролю версій (Git)</li>
+        <li>Алгоритми та структури даних</li>
+    </ul>
+</section>
+
+<section class="mt-4">
+    <h2>Технології</h2>
+    <ul>
+        <li><strong>Мови:</strong> Python, C++, HTML, CSS</li>
+        <li><strong>Фреймворки:</strong> Flask</li>
+        <li><strong>Бази даних:</strong> SQL</li>
+        <li><strong>Інструменти:</strong> Git, GitHub, VS Code</li>
+    </ul>
+</section>
+
+<section class="mt-4">
+    <h2>Досвід роботи / Проекти</h2>
+    <p><strong>Сайт-візитка на Flask (навчальний проєкт)</strong><br>
+    Розробка простого веб-додатку з використанням шаблонізатора, статичних файлів та розгортанням на платформі Render.</p>
+</section>
+
+{% endblock %}

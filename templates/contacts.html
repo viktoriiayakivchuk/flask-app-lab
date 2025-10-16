@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Контакти</h2>
+<ul>
+    <li>Email: viktoriia.yakivchuk.20@pnu.edu.ua</li>
+    <li>Telegram: @viviiksy</li>
+</ul>
+<hr>
+<h3>Форма зворотного зв'язку (заглушка)</h3>
+<form>
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Ваше ім'я">
+    </div>
+    <div class="mb-3">
+        <input type="email" class="form-control" placeholder="Ваш Email">
+    </div>
+    <div class="mb-3">
+        <textarea class="form-control" rows="3" placeholder="Повідомлення"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Надіслати</button>
+</form>
+{% endblock %}
