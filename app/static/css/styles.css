@@ -98,11 +98,86 @@ footer {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
     color: #121212; 
-    font-weight: 
+    font-weight: 600;
 }
 
 .btn-primary:hover {
     background-color: #a978e9; 
     border-color: #a978e9;
     color: #121212;
+}
+
+.table {
+    border-color: #333;
+}
+
+.table-dark {
+    --bs-table-bg: #2c2c2c; /* Темніший фон таблиці */
+    --bs-table-border-color: #333;
+    --bs-table-color: var(--primary-text-color);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    /* Фон для "зебри" */
+    --bs-table-accent-bg: var(--surface-color); 
+    color: var(--primary-text-color);
+}
+
+/* Кастомні картки для форм */
+.card {
+    background-color: #2c2c2c;
+    border: 1px solid #333;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid #333;
+    font-weight: 600;
+    color: var(--primary-text-color);
+}
+
+/* Стилі для нових кнопок */
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+    color: #ffffff;
+    font-weight: 600;
+}
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #121212; /* Темний текст на світлій кнопці */
+    font-weight: 600;
+}
+.btn-warning:hover {
+    background-color: #ffca2c;
+    border-color: #ffc720;
+    color: #121212;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+    font-weight: 600;
+}
+.btn-danger:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+.btn-outline-danger:hover {
+    color: #ffffff;
+    background-color: #dc3545;
+    border-color: #dc3545;
 }

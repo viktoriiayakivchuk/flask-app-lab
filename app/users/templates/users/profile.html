@@ -3,26 +3,102 @@
 {% block title %}Profile Page{% endblock %}
 
 {% block content %}
+
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6 text-center">
-
         <div class="mb-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="color: var(--accent-color);">
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
             </svg>
         </div>
-
         <h1 class="mb-3">Вітаємо, {{ username }}!</h1> 
-        
         <p class="fs-5" style="color: var(--secondary-text-color);">Це ваш особистий кабінет.</p>
-        
         <div class="d-grid gap-2 mt-5">
             <a href="{{ url_for('users_bp.logout') }}" class="btn btn-outline-danger btn-lg">
                 Вийти з системи
             </a>
         </div>
-
     </div>
 </div>
+
+<hr class="my-5" style="border-color: #333;">
+
+<h2 class="text-center mb-4">Управління Cookies</h2>
+
+<div class="card">
+    <div class="card-header">Додати/Оновити кукі</div>
+    <div class="card-body">
+        <form action="{{ url_for('users_bp.add_cookie') }}" method="POST" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="cookie_key" class="form-label">Ключ</label>
+                <input type="text" class="form-control" id="cookie_key" name="cookie_key" required>
+            </div>
+            <div class="col-md-4">
+                <label for="cookie_value" class="form-label">Значення</label>
+                <input type="text" class="form-control" id="cookie_value" name="cookie_value" required>
+            </div>
+            <div class="col-md-3">
+                <label for="cookie_max_age" class="form-label">Термін дії (сек)</label>
+                <input type="number" class="form-control" id="cookie_max_age" name="cookie_max_age" placeholder="86400 (1 день)">
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-success w-100">Додати</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Видалити кукі за ключем</div>
+            <div class="card-body">
+                <form action="{{ url_for('users_bp.delete_cookie') }}" method="POST" class="d-flex gap-2">
+                    <input type="text" class="form-control" name="cookie_key_delete" placeholder="Введіть ключ кукі" required>
+                    <button type="submit" class="btn btn-warning">Видалити</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Видалити всі кукі</div>
+            <div class="card-body text-center">
+                <p class="mb-2" style="color: var(--secondary-text-color);">Це видалить всі кукі, окрім 'session'.</p>
+                <form action="{{ url_for('users_bp.delete_all_cookies') }}" method="POST" class="d-grid">
+                    <button type="submit" class="btn btn-danger">Видалити Всі</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mt-4 mb-3">Список всіх кукі</h4>
+<div class="table-responsive">
+    <table class="table table-dark table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Ключ</th>
+                <th scope="col">Значення</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if cookies %}
+                {% for key, value in cookies.items() %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td style="word-break:break-all; max-width: 60vw;">{{ value | truncate(100) }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="2" class="text-center">Кукі не знайдено.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
