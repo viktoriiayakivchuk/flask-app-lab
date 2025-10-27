@@ -111,73 +111,96 @@ footer {
     border-color: #333;
 }
 
-.table-dark {
-    --bs-table-bg: #2c2c2c; /* Темніший фон таблиці */
-    --bs-table-border-color: #333;
-    --bs-table-color: var(--primary-text-color);
-}
-
-.table-striped > tbody > tr:nth-of-type(odd) > * {
-    /* Фон для "зебри" */
-    --bs-table-accent-bg: var(--surface-color); 
-    color: var(--primary-text-color);
-}
-
-/* Кастомні картки для форм */
-.card {
+.card-themed {
     background-color: #2c2c2c;
     border: 1px solid #333;
     margin-bottom: 1.5rem;
 }
 
-.card-header {
+.card-header-themed {
     background-color: var(--surface-color);
     border-bottom: 1px solid #333;
     font-weight: 600;
     color: var(--primary-text-color);
 }
 
-/* Стилі для нових кнопок */
-.btn-success {
-    background-color: #198754;
-    border-color: #198754;
-    color: #ffffff;
-    font-weight: 600;
+.table-themed {
+    border-color: #333;
+    color: var(--primary-text-color);
 }
-.btn-success:hover {
-    background-color: #157347;
-    border-color: #146c43;
+.table-themed thead {
+    background-color: #2c2c2c; /* Фон заголовка таблиці */
 }
-
-.btn-warning {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    color: #121212; /* Темний текст на світлій кнопці */
-    font-weight: 600;
-}
-.btn-warning:hover {
-    background-color: #ffca2c;
-    border-color: #ffc720;
-    color: #121212;
+.table-themed tbody > tr:nth-of-type(odd) > * {
+    background-color: var(--surface-color); /* "Зебра" */
+    color: var(--primary-text-color);
 }
 
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: #ffffff;
-    font-weight: 600;
+.text-muted-themed {
+    color: var(--secondary-text-color);
 }
-.btn-danger:hover {
-    background-color: #bb2d3b;
-    border-color: #b02a37;
+.hr-themed {
+    border-color: #333;
 }
 
-.btn-outline-danger {
-    color: #dc3545;
-    border-color: #dc3545;
+/* Кнопки */
+.btn-success { background-color: #198754; border-color: #198754; color: #ffffff; font-weight: 600; }
+.btn-success:hover { background-color: #157347; border-color: #146c43; }
+.btn-warning { background-color: #ffc107; border-color: #ffc107; color: #121212; font-weight: 600; }
+.btn-warning:hover { background-color: #ffca2c; border-color: #ffc720; color: #121212; }
+.btn-danger { background-color: #dc3545; border-color: #dc3545; color: #ffffff; font-weight: 600; }
+.btn-danger:hover { background-color: #bb2d3b; border-color: #b02a37; }
+.btn-outline-danger { color: #dc3545; border-color: #dc3545; }
+.btn-outline-danger:hover { color: #ffffff; background-color: #dc3545; border-color: #dc3545; }
+
+/* --- (Весь ваш існуючий темний код 'styles.css' тут) --- */
+/* ... */
+
+/* === НОВІ СТИЛІ ДЛЯ ЗАВДАННЯ 3 (Світла тема для .profile-page-wrapper) === */
+
+
+.profile-page-wrapper.light-mode h1 {
+    color: #000000;
 }
-.btn-outline-danger:hover {
-    color: #ffffff;
-    background-color: #dc3545;
-    border-color: #dc3545;
+.profile-page-wrapper.light-mode h2,
+.profile-page-wrapper.light-mode h4 {
+    color: #6200EE; /* Фіолетовий акцент */
+    border-bottom: 1px solid #E0E0E0;
 }
+.profile-page-wrapper.light-mode .text-muted-themed {
+    color: #555555;
+}
+.profile-page-wrapper.light-mode .hr-themed {
+    border-color: #E0E0E0;
+}
+
+/* Картки */
+.profile-page-wrapper.light-mode .card-themed {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+}
+.profile-page-wrapper.light-mode .card-header-themed {
+    background-color: #F8F9FA;
+    border-bottom: 1px solid #E0E0E0;
+    color: #212529;
+}
+
+/* Таблиця */
+.profile-page-wrapper.light-mode .table-themed {
+    border-color: #E0E0E0;
+    color: #212529;
+}
+.profile-page-wrapper.light-mode .table-themed thead {
+    background-color: #F8F9FA;
+}
+.profile-page-wrapper.light-mode .table-themed tbody > tr:nth-of-type(odd) > * {
+    background-color: #F8F9FA;
+    color: #212529;
+}
+
+/* Стиль для активної кнопки теми */
+.profile-page-wrapper.light-mode .btn-outline-secondary.active {
+    background-color: #6c757d;
+    color: white;
+}
+/* (Bootstrap сам обробляє 'active' для темної теми) */

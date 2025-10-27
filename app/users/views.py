@@ -43,10 +43,16 @@ def profile():
         return redirect(url_for('users_bp.login'))
     
     username = session['username']
+    cookies = request.cookies
     
-    # Отримуємо всі кукі для відображення у таблиці
-    cookies = request.cookies 
-    return render_template('users/profile.html', username=username, cookies=cookies)
+    # === ОНОВЛЕНО ДЛЯ ЗАВДАННЯ 3 ===
+    # Читаємо 'profile_theme' кукі, за замовчуванням 'dark'
+    profile_theme = request.cookies.get('profile_theme', 'dark')
+    
+    return render_template('users/profile.html', 
+                           username=username, 
+                           cookies=cookies,
+                           profile_theme=profile_theme) # Передаємо тему в шаблон
 
 @users_bp.route('/logout')
 def logout():
@@ -54,7 +60,7 @@ def logout():
     flash('Ви вийшли з системи.', 'success')
     return redirect(url_for('users_bp.login'))
 
-# === НОВІ МАРШРУТИ ДЛЯ ЗАВДАННЯ 2 (Cookies) ===
+# === МАРШРУТИ ДЛЯ ЗАВДАННЯ 2 (Cookies) ===
 
 @users_bp.route('/add-cookie', methods=['POST'])
 def add_cookie():
@@ -69,7 +75,6 @@ def add_cookie():
         flash('Ключ та значення кукі не можуть бути порожніми.', 'error')
         return redirect(url_for('users_bp.profile'))
 
-    # Встановлюємо термін дії (якщо вказано), 1 день за замовчуванням
     max_age_sec = 86400 # 1 день
     if max_age_str:
         try:
@@ -111,10 +116,20 @@ def delete_all_cookies():
     
     deleted_count = 0
     for key in request.cookies:
-        # Не видаляємо 'session' кукі, бо це розлогінить нас
         if key != 'session':
             response.delete_cookie(key)
             deleted_count += 1
             
     flash(f'Успішно видалено {deleted_count} кукі (окрім сесії).', 'success')
+    return response
+
+# === НОВИЙ МАРШРУТ ДЛЯ ЗАВДАННЯ 3 (Тема для Profile) ===
+@users_bp.route('/set-profile-theme/<theme>')
+def set_profile_theme(theme):
+    if theme not in ['light', 'dark']:
+        theme = 'dark'
+    
+    response = make_response(redirect(url_for('users_bp.profile')))
+    
+    response.set_cookie('profile_theme', theme, max_age=30*24*60*60)
     return response
