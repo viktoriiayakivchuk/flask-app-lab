@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        
+        <div class="text-center mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16" style="color: var(--accent-color);">
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            </svg>
+        </div>
+
+        <h2 class="text-center mb-3">Вхід у систему</h2>
+        <p class="text-center text-muted mb-4">Використовуйте 'admin' / 'password123'</p>
+
+        <form method="POST" action="{{ url_for('users_bp.login') }}" class="mt-4">
+            
+            <div class="mb-3">
+                <label for="username" class="form-label">Ім'я користувача</label>
+                <input type="text" class="form-control form-control-lg" id="username" name="username" required>
+            </div>
+            
+            <div class="mb-4">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-lg w-100">Ввійти</button>
+        
+        </form>
+    </div>
+</div>
+{% endblock %}
