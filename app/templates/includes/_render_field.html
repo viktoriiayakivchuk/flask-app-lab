@@ -1,0 +1,20 @@
+{% macro render_field(field) %}
+    <div class="mb-3">
+        {{ field.label(class="form-label") }}
+        
+        <!-- 
+          2. Малюємо саме поле (<input> або <select>).
+          'form-control' - це клас Bootstrap.
+          'is-invalid' - клас Bootstrap, який додається, якщо є помилки валідації.
+        -->
+        {{ field(class="form-control " + ("is-invalid" if field.errors else ""), **kwargs) }}
+        
+        {% if field.errors %}
+            <div class="invalid-feedback d-block">
+                {% for error in field.errors %}
+                    <span>{{ error }}</span><br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

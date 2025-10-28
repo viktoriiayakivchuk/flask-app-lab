@@ -1,23 +1,41 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% from 'includes/_render_field.html' import render_field with context %}
+
+{% block title %}Контакти{% endblock %}
 
 {% block content %}
-<h2>Контакти</h2>
-<ul>
-    <li>Email: viktoriia.yakivchuk.20@pnu.edu.ua</li>
-    <li>Telegram: @viviiksy</li>
-</ul>
-<hr>
-<h3>Форма зворотного зв'язку (заглушка)</h3>
-<form>
-    <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Ваше ім'я">
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <h2 class="text-center mb-4">Зв'яжіться з нами</h2>
+        
+        <form method="POST" action="{{ url_for('contacts') }}" novalidate>
+            
+            {{ form.csrf_token }}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    {{ render_field(form.name) }}
+                </div>
+                <div class="col-md-6">
+                    {{ render_field(form.email) }}
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    {{ render_field(form.phone) }}
+                </div>
+                <div class="col-md-6">
+                    {{ render_field(form.subject) }}
+                </div>
+            </div>
+            
+            {{ render_field(form.message, rows=5) }}
+            
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-primary btn-lg") }}
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <input type="email" class="form-control" placeholder="Ваш Email">
-    </div>
-    <div class="mb-3">
-        <textarea class="form-control" rows="3" placeholder="Повідомлення"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Надіслати</button>
-</form>
+</div>
 {% endblock %}
