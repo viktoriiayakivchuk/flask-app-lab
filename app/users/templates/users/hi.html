@@ -1,26 +1,39 @@
-{% extends "base.html" %} {% block title %} Greating Page {% endblock %} {%block
-content %}
+{% extends "base.html" %}
+{% block title %}Вітальна сторінка{% endblock %}
 
-<br />
-<nav>
-  <ul class="navbar-nav ms-auto">
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        href="{{ url_for('users_bp.greetings', name='John', age=30)}}"
-        >Greet John</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('users_bp.admin')}}">Admin</a>
-    </li>
-  </ul>
-</nav>
-<br />
+{% block content %}
+<div class="container py-5">
+  <!-- Навігація -->
+  <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: var(--bs-dark); border-radius: 12px;">
+    <div class="container-fluid">
+      <span class="navbar-brand fw-bold" style="color: var(--accent-color);">Навігація</span>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item me-3">
+          <a class="btn btn-outline-light btn-sm" href="{{ url_for('users_bp.greetings', name='John', age=30) }}">
+            Привітати Джона
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary btn-sm" href="{{ url_for('users_bp.admin') }}">
+            Адмін
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-<h2>Hello, {{name}}!</h2>
-{%if age%}
-<p>You are {{age}} years old.</p>
-{%else%}
-<p>Age is unknown</p>
-{%endif%} {% endblock %}
+  <!-- Основний контент -->
+  <div class="card shadow-lg border-0 mx-auto" style="max-width: 600px; border-radius: 20px; background-color: #1e1e1e;">
+    <div class="card-body text-center text-light">
+      <h2 class="mb-3" style="color: var(--accent-color);">Вітаю, {{ name }}!</h2>
+      {% if age %}
+      <p class="fs-5 text-secondary">Тобі {{ age }} років.</p>
+      {% else %}
+      <p class="fs-5 text-muted">Вік невідомий.</p>
+      {% endif %}
+      <hr class="my-4" style="border-color: rgba(255,255,255,0.2);" />
+
+    </div>
+  </div>
+</div>
+{% endblock %}
