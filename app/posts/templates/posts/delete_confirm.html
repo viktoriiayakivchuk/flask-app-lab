@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Підтвердження видалення{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">Підтвердження видалення</h1>
+  
+  <p class="lead">Ви впевнені, що хочете остаточно видалити пост
+    <strong>"{{ post.title }}"</strong>?
+  </p>
+  <p class="text-danger">Цю дію неможливо скасувати.</p>
+  
+  {# Форма відправляє POST-запит на ту саму URL,
+     щоб view ('delete_post') міг його обробити #}
+  <form method="POST">
+    
+    <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="btn btn-secondary">
+      Скасувати
+    </a>
+    <button type="submit" class="btn btn-danger">Видалити</button>
+  </form>
+{% endblock %}

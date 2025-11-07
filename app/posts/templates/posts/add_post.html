@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "includes/_render_field.html" import render_field %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h1 class="mb-4">{{ form_title }}</h1>
+    
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }} {{ render_field(form.title) }}
+
+      {{ render_field(form.content) }}
+
+      <div class="row">
+        <div class="col-md-6">
+          {{ render_field(form.author) }}
+        </div>
+        <div class="col-md-6">
+          {{ render_field(form.category) }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          {{ render_field(form.posted) }}
+        </div>
+        <div class="col-md-6 d-flex align-items-center pt-3">
+          {{ render_field(form.is_active) }}
+        </div>
+      </div>
+      
+      {{ form.submit(class="btn btn-primary mt-3") }}
+    </form>
+  </div>
+</div>
+{% endblock %}

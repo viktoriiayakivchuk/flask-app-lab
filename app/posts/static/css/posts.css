@@ -1,0 +1,39 @@
+.post-card {
+    border: 1px solid var(--border-color); 
+    background-color: var(--card-bg-color);
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.post-card-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 1.5rem;
+}
+
+.post-card .card-title a {
+    color: var(--accent-color); 
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.post-card .card-title a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.post-card .card-text {
+    color: var(--secondary-text-color);
+}
+
+.post-card .card-date {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+}

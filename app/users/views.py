@@ -1,6 +1,7 @@
 from flask import (render_template, request, redirect, url_for, 
                    Blueprint, session, flash, make_response) 
-from app.forms import LoginForm
+from app.forms import LoginForm 
+# Видаляємо 'from app import app'
 
 users_bp = Blueprint('users_bp', 
                      __name__, 
@@ -23,10 +24,8 @@ def admin():
 # === ОНОВЛЕНА ФУНКЦІЯ 'login' ДЛЯ ЗАВДАННЯ 2 (WTForms) - ЛАБ 5===
 @users_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # 2. Створюємо екземпляр форми
     form = LoginForm()
     
-    # 3. form.validate_on_submit() перевіряє POST-запит ТА валідність
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
@@ -44,7 +43,6 @@ def login():
             return redirect(url_for('users_bp.profile'))
         else:
             flash('Неправильні дані! Спробуйте ще раз.', 'error')
-
 
     return render_template('users/login.html', form=form)
 
@@ -72,27 +70,22 @@ def logout():
     return redirect(url_for('users_bp.login'))
 
 # === МАРШРУТИ ДЛЯ ЗАВДАННЯ 2 (Cookies) - ЛАБ 4 ===
-
 @users_bp.route('/add-cookie', methods=['POST'])
 def add_cookie():
     if 'username' not in session:
         return redirect(url_for('users_bp.login'))
-
     key = request.form.get('cookie_key')
     value = request.form.get('cookie_value')
     max_age_str = request.form.get('cookie_max_age')
-
     if not key or not value:
         flash('Ключ та значення кукі не можуть бути порожніми.', 'error')
         return redirect(url_for('users_bp.profile'))
-
     max_age_sec = 86400 
     if max_age_str:
         try:
             max_age_sec = int(max_age_str)
         except ValueError:
             flash('Неправильний формат терміну дії. Встановлено 1 день.', 'warning')
-
     response = make_response(redirect(url_for('users_bp.profile')))
     response.set_cookie(key, value, max_age=max_age_sec)
     flash(f'Кукі "{key}" успішно додано!', 'success')
@@ -102,39 +95,32 @@ def add_cookie():
 def delete_cookie():
     if 'username' not in session:
         return redirect(url_for('users_bp.login'))
-
     key_to_delete = request.form.get('cookie_key_delete')
     if not key_to_delete:
         flash('Введіть ключ кукі для видалення.', 'error')
         return redirect(url_for('users_bp.profile'))
-
     response = make_response(redirect(url_for('users_bp.profile')))
-    
     if key_to_delete in request.cookies:
         response.delete_cookie(key_to_delete)
         flash(f'Кукі "{key_to_delete}" видалено.', 'success')
     else:
         flash(f'Кукі "{key_to_delete}" не знайдено.', 'error')
-        
     return response
 
 @users_bp.route('/delete-all-cookies', methods=['POST'])
 def delete_all_cookies():
     if 'username' not in session:
         return redirect(url_for('users_bp.login'))
-
     response = make_response(redirect(url_for('users_bp.profile')))
-    
     deleted_count = 0
     for key in request.cookies:
         if key != 'session':
             response.delete_cookie(key)
             deleted_count += 1
-            
     flash(f'Успішно видалено {deleted_count} кукі (окрім сесії).', 'success')
     return response
 
-# === НОВИЙ МАРШРУТ ДЛЯ ЗАВДАННЯ 3 (Тема для Profile) - ЛАБ 4===
+# === МАРШРУТ ПЕРЕНЕСЕНО СЮДИ (з app/views.py) ===
 @users_bp.route('/set-profile-theme/<theme>')
 def set_profile_theme(theme):
     if theme not in ['light', 'dark']:

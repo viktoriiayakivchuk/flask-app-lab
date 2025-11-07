@@ -1,16 +1,43 @@
-# Лабораторна робота №5
+# Лабораторна робота №6
 
-### Завдання 1: контактна форма з валідацією.
+## Частина 5: Міграції бази даних
+
+### 1. 
+![flask db init](screenshots/1.png)
 
 
-![Пусті поля](screenshots/contacts_validation.png)
-![Успішне відправлення](screenshots/contacts_success.png)
-![Contact.log](screenshots/contacts_log.png)
+## Частина 6: Ручне тестування (CRUD)
+
+### 1. Список всіх постів
+Сторінка `/posts` відображає всі активні пости. Використовується кастомний CSS (`posts.css`) та зображення-заглушка (`default.jpg`) з `static` папки блюпринта.
+
+![Список постів](screenshots/7.png)
+
+### 2. Створення/редагування
+Форма `PostForm` (на сторінках `/posts/create` та `/posts/<id>/update`) тепер включає всі поля з нової моделі, такі як `SelectField` для `Enum`-категорії та `DateTimeLocalField` для дати.
+
+![Форма створення поста](screenshots/3.png)
+![Форма редагування поста](screenshots/4.png)
+
+### 3. Детальна сторінка поста
+Сторінка `/posts/<id>` відображає повну інформацію про пост, включаючи нові поля "Автор" та "Категорія" з моделі.
+
+![Деталі поста](screenshots/9.png)
+
+### 4. Підтвердження/успішне видалення поста
+![Сторінка підтвердження видалення](screenshots/5.png)
+![Успішне видалення](screenshots/6.png)
+
+### 4. Перевірка даних у `flask shell`
+За допомогою `flask shell` можна робити прямі запити до бази даних (наприклад, `db.session.scalars(db.select(Post)).all()`), щоб переконатися, що дані були коректно збережені.
+
+![flask shell](screenshots/8.png)
 
 ---
 
-### Завдання 2: форма входу з валідацією
+##  Модульні тести
 
-![Пусті поля](screenshots/login_validation1.png)
-![Короткий пароль](screenshots/login_validation2.png)
-![Успішний вхід](screenshots/login_success_remember.png)
+### 1. Запуск `unittest`
+Команда `python -m unittest discover tests` автоматично знаходить і запускає всі тести в папці `tests/`. Результат `OK` підтверджує, що логіка моделі `Post` (включно зі створенням, `__repr__` та `default` значеннями) працює коректно.
+
+![Результат unittest](screenshots/2.png)

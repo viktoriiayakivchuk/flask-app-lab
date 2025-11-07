@@ -1,24 +1,41 @@
-{% extends 'base.html' %}
-{% block title %}POST №{{ post["id"] }}{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="card shadow border-0 mx-auto"
-       style="border-radius: 15px; background-color: #1e1e1e; max-width: 800px;">
-    <div class="card-body text-light">
-      <h1 class="h4 mb-3" style="color: var(--accent-color);">
-        Пост № {{ post["id"] }} — {{ post["title"] }}
-      </h1>
-
-      <p class="fs-5 mb-4 text-secondary" style="line-height: 1.7;">
-        {{ post.get('content') }}
-      </p>
-
-      <a href="{{ url_for('posts.get_posts') }}"
-         class="btn btn-outline-light">
-        ← Повернутись до списку
-      </a>
-    </div>
+<div class="mb-4">
+  <h1>{{ post.title }}</h1>
+  
+  <div class="d-flex text-muted flex-wrap">
+    <p class="me-3">
+      <strong>Автор:</strong> {{ post.author }}
+    </p>
+    <p class="me-3">
+      <strong>Категорія:</strong> 
+      {{ post.category.value }} 
+    </p>
+    <p>
+      <strong>Опубліковано:</strong> 
+      {{ post.posted.strftime('%Y-%m-%d %H:%M') }}
+    </p>
   </div>
+</div>
+
+<div style="white-space: pre-wrap;" class="post-body">
+  {{ post.content }}
+</div>
+
+<hr class="my-4">
+
+<div>
+  <a href="{{ url_for('posts.update_post', id=post.id) }}" class="btn btn-warning">
+    Редагувати
+  </a>
+  <a href="{{ url_for('posts.delete_post', id=post.id) }}" class="btn btn-danger">
+    Видалити
+  </a>
+  <a href="{{ url_for('posts.get_posts') }}" class="btn btn-secondary">
+    &larr; Назад до всіх постів
+  </a>
 </div>
 {% endblock %}
