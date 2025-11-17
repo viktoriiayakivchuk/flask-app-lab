@@ -3,9 +3,10 @@ from wtforms import (
     StringField, 
     TextAreaField, 
     SubmitField, 
-    SelectField,
+    SelectField, 
     BooleanField,
-    DateTimeLocalField  
+    DateTimeLocalField,
+    SelectMultipleField 
 )
 from wtforms.validators import (
     DataRequired, 
@@ -19,34 +20,33 @@ class PostForm(FlaskForm):
     Форма для створення/редагування поста.
     """
     
-    # title - StringField, required, max 150 (відповідає моделі)
     title = StringField(
         "Заголовок", 
         validators=[DataRequired(), Length(max=150)]
     )
     
-    # content - TextAreaField, required
     content = TextAreaField(
         "Вміст", 
         validators=[DataRequired()]
     )
     
-    # === ОСЬ ВИПРАВЛЕННЯ ===
-    # Додаємо поле, яке вимагає модель
-    author = StringField(
-        'Автор', 
-        validators=[DataRequired(), Length(max=20)], 
-        default='Anonymous' # Значення за замовчуванням
+    author_id = SelectField(
+        "Автор", 
+        coerce=int,
+        validators=[DataRequired(message="Будь ласка, оберіть автора")]
     )
-    # ======================
     
-    # is_active (boolean)
+    # НОВЕ ПОЛЕ
+    tags = SelectMultipleField(
+        "Теги (утримуйте Ctrl/Cmd для вибору декількох)", 
+        coerce=int
+    )
+    
     is_active = BooleanField(
         "Активний (відображається на сайті)", 
         default='checked'
     )
     
-    # posted (DateTimeLocalField)
     posted = DateTimeLocalField(
         "Дата публікації",
         format='%Y-%m-%dT%H:%M',
@@ -54,12 +54,10 @@ class PostForm(FlaskForm):
         validators=[DataRequired()]
     )
     
-    # category (SelectField) - 'choices' генеруються з вашого Enum 'PostCategory'
     category = SelectField(
         "Категорія",
         choices=[(cat.value, cat.name.capitalize()) for cat in PostCategory],
         validators=[DataRequired()]
     )
     
-    # submit
     submit = SubmitField("Створити пост")

@@ -6,9 +6,9 @@
 <div class="mb-4">
   <h1>{{ post.title }}</h1>
   
-  <div class="d-flex text-muted flex-wrap">
+  <div class="d-flex fs-6 flex-wrap">
     <p class="me-3">
-      <strong>Автор:</strong> {{ post.author }}
+      <strong>Автор:</strong> {{ post.user.username }}
     </p>
     <p class="me-3">
       <strong>Категорія:</strong> 
@@ -20,6 +20,15 @@
     </p>
   </div>
 </div>
+
+{% if post.tags %}
+  <div class="mb-3">
+    <strong>Теги:</strong>
+    {% for tag in post.tags %}
+      <span class="badge bg-secondary">{{ tag.name }}</span>
+    {% endfor %}
+  </div>
+{% endif %}
 
 <div style="white-space: pre-wrap;" class="post-body">
   {{ post.content }}

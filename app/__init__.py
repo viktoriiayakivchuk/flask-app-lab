@@ -60,4 +60,6 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
         from .posts import models 
         # (Якщо у 'users' з'являться моделі, ми додамо тут 'from .users import models')
 
+        from .users import models
+
     return app
