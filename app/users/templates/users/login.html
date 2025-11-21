@@ -1,30 +1,21 @@
 {% extends 'base.html' %}
 {% from 'includes/_render_field.html' import render_field with context %}
 
-{% block title %}Login Page{% endblock %}
+{% block title %}Вхід{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
-        
-        <div class="text-center mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16" style="color: var(--accent-color);">
-                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-            </svg>
-        </div>
-
         <h2 class="text-center mb-3">Вхід у систему</h2>
-        <p class="text-center text-muted mb-4">Використовуйте 'admin' / 'password123'</p>
 
         <form method="POST" action="{{ url_for('users_bp.login') }}" novalidate>
             
-            <!-- 3. CSRF-токен (обов'язково) -->
             {{ form.csrf_token }}
             
-            {{ render_field(form.username, class="form-control form-control-lg") }}
+            {{ render_field(form.email, class="form-control form-control-lg", placeholder="user@example.com") }}
+            
             {{ render_field(form.password, class="form-control form-control-lg") }}
 
-            
             <div class="mb-3 form-check">
                 {{ form.remember_me(class="form-check-input") }}
                 {{ form.remember_me.label(class="form-check-label") }}
@@ -33,7 +24,12 @@
             <div class="d-grid">
                 {{ form.submit(class="btn btn-primary btn-lg w-100") }}
             </div>
-        
+            
+            <div class="text-center mt-3">
+                <small class="text-muted">
+                    Немає акаунту? <a href="{{ url_for('users_bp.register') }}">Зареєструватися</a>
+                </small>
+            </div>
         </form>
     </div>
 </div>

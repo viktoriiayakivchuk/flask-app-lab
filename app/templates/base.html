@@ -19,7 +19,6 @@
 
     <nav class="navbar navbar-expand-lg {% if theme == 'light' %}navbar-light bg-light{% else %}navbar-dark bg-dark{% endif %} sticky-top">
         <div class="container-fluid">
-            <!-- ВИПРАВЛЕНО: 'main.resume' -->
             <a class="navbar-brand" href="{{ url_for('main.resume') }}">Flask App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -27,25 +26,25 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <!-- ВИПРАВЛЕНО: 'main.resume' -->
                         <a class="nav-link" href="{{ url_for('main.resume') }}">Резюме</a>
                     </li>
                     <li class="nav-item">
-                        <!-- ВИПРАВЛЕНО: 'main.contacts' -->
                         <a class="nav-link" href="{{ url_for('main.contacts') }}">Контакти</a>
                     </li>
                     <li class="nav-item">
-                        <!-- ВИПРАВЛЕНО: 'post_bp.get_posts' -->
                         <a class="nav-link" href="{{ url_for('posts.get_posts') }}">Пости</a>
                     </li>
                 </ul>
+                
                 <ul class="navbar-nav">
-                    {% if 'username' in session %}
+                    {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('users_bp.profile') }}">Профіль ({{ session['username'] }})</a>
+                            <a class="nav-link" href="{{ url_for('users_bp.profile') }}">
+                                Профіль ({{ current_user.username }})
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('users_bp.admin') }}">Адмін</a>
+                            <a class="nav-link" href="{{ url_for('users_bp.users_list') }}">Всі користувачі</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('users_bp.logout') }}">Вийти</a>
@@ -53,6 +52,9 @@
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('users_bp.login') }}">Увійти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('users_bp.register') }}">Реєстрація</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -79,7 +81,6 @@
         
         <div class="container text-center pb-3">
             {% if theme == 'light' %}
-                <!-- ВИПРАВЛЕНО: 'users_bp.set_profile_theme' -->
                 <a href="{{ url_for('users_bp.set_profile_theme', theme='dark') }}" class="btn btn-dark btn-sm">
                     Переключити на темну
                 </a>

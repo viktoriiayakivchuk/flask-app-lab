@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Список користувачів{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Список користувачів ({{ users_count }})</h2>
+
+    {% if users %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Поки що немає зареєстрованих користувачів.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

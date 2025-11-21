@@ -5,6 +5,7 @@ from .config import config_map # config.py знаходиться у папці 
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
+from .extensions import bcrypt, login_manager 
 import os
 
 class Base(DeclarativeBase):
@@ -19,9 +20,7 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
 
-# Функція створення застосунку фабричного типу
 def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flask:
-
     app = Flask(__name__)
     app.config.from_object(config_map[config_name])
     
@@ -29,6 +28,13 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
 
     db.init_app(app)
     migrate.init_app(app, db)
+    bcrypt.init_app(app)
+
+    login_manager.init_app(app)
+    # Вказуємо функцію-view для логіну (назва блюпринта.функція)
+    login_manager.login_view = 'users_bp.login' 
+    login_manager.login_message = 'Будь ласка, увійдіть, щоб отримати доступ до цієї сторінки.'
+    login_manager.login_message_category = 'info'
 
     # --- РЕЄСТРАЦІЯ ОБРОБНИКА ПОМИЛОК (404) ---
     @app.errorhandler(404)

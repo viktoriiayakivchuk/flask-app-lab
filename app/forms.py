@@ -40,14 +40,15 @@ class ContactForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     """
-    Форма для сторінки логіну (Завдання 2)
+    Оновлена форма входу для виконання пункту 4.
+    Використовуємо email для автентифікації.
     """
-    username = StringField('Ім\'я користувача',
-                           validators=[DataRequired(message="Це поле обов'язкове")])
+    email = StringField('Email', 
+                        validators=[DataRequired(message="Введіть email"), 
+                                    Email(message="Некоректний формат email")])
     
-    password = PasswordField('Пароль',
-                             validators=[DataRequired(message="Це поле обов'язкове"),
-                                         Length(min=4, max=10, message="Пароль має бути від 4 до 10 символів")])
+    password = PasswordField('Пароль', 
+                             validators=[DataRequired(message="Введіть пароль")])
     
     remember_me = BooleanField('Запам\'ятати мене')
     
