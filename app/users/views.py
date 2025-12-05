@@ -1,18 +1,52 @@
+import os
+import secrets
+from PIL import Image
+from datetime import datetime, timezone
 from flask import (render_template, request, redirect, url_for, 
-                   Blueprint, session, flash, make_response)
+                   Blueprint, session, flash, make_response, current_app)
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import select
 from app import db, bcrypt
 from app.users.models import User
 from app.forms import LoginForm
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UpdateAccountForm, ChangePasswordForm
 
 users_bp = Blueprint('users_bp', 
                      __name__, 
                      template_folder='templates', 
                      url_prefix='/users')
 
-# --- Маршрути з Лаб 3 (Привітання) ---
+@users_bp.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.now(timezone.utc)
+        db.session.commit()
+
+def save_picture(form_picture):
+    """
+    Зберігає зображення профілю:
+    1. Генерує випадкове ім'я (hex).
+    2. Зменшує зображення до 125x125 (Pillow).
+    3. Зберігає у static/images.
+    """
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    
+    # Шлях до папки static/images
+    picture_path = os.path.join(current_app.root_path, 'static/images', picture_fn)
+    
+    # Зміна розміру
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    
+    i.save(picture_path)
+    return picture_fn
+
+
+# --- Основні маршрути ---
+
 @users_bp.route("/hi/<string:name>")
 def greetings(name):
     name = name.upper()
@@ -24,10 +58,8 @@ def admin():
     to_url = url_for("users_bp.greetings", name="administrator", age=45, _external=True, title="Greeting Page")
     return redirect(to_url)
 
-# === РЕЄСТРАЦІЯ (Лаб 9) ===
 @users_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    # Якщо користувач вже авторизований - перенаправляємо на профіль
     if current_user.is_authenticated:
         return redirect(url_for('users_bp.profile'))
 
@@ -44,16 +76,13 @@ def register():
     
     return render_template('users/register.html', form=form)
 
-# === ВХІД (Лаб 9) ===
 @users_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # Якщо користувач вже авторизований - перенаправляємо на профіль
     if current_user.is_authenticated:
         return redirect(url_for('users_bp.profile'))
 
     form = LoginForm()
     if form.validate_on_submit():
-        # Вхід за Email (згідно з методичкою)
         user = User.query.filter_by(email=form.email.data).first()
         
         if user and user.check_password(form.password.data):
@@ -67,29 +96,67 @@ def login():
 
     return render_template('users/login.html', form=form)
 
-# === ВИХІД (Лаб 9) ===
 @users_bp.route('/logout')
 def logout():
     logout_user()
     flash('Ви вийшли з системи.', 'success')
     return redirect(url_for('users_bp.login'))
 
-# === ПРОФІЛЬ (Лаб 9 - захищений) ===
-@users_bp.route('/profile')
+@users_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    form = UpdateAccountForm()
+    password_form = ChangePasswordForm()
+    
+    if 'submit' in request.form and form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image = picture_file
+            
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.about_me = form.about_me.data
+        
+        db.session.commit()
+        flash('Ваш акаунт оновлено!', 'success')
+        return redirect(url_for('users_bp.profile'))
+    
+    if 'submit_password' in request.form and password_form.validate_on_submit():
+        if not current_user.check_password(password_form.current_password.data):
+            flash('Невірний поточний пароль.', 'danger')
+        else:
+            hashed_password = bcrypt.generate_password_hash(password_form.new_password.data).decode('utf-8')
+            current_user.password = hashed_password
+            db.session.commit()
+            flash('Ваш пароль успішно змінено!', 'success')
+            return redirect(url_for('users_bp.profile'))
+
+    # --- GET ЗАПИТ ---
+    if request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.about_me.data = current_user.about_me
+
+    image_file = url_for('static', filename='images/' + current_user.image)
+    profile_theme = request.cookies.get('profile_theme', 'light') 
+
     return render_template('users/profile.html', 
-                           username=current_user.username, 
+                           title='Profile',
+                           image_file=image_file, 
+                           form=form,
+                           password_form=password_form,
+                           profile_theme=profile_theme,
+                           username=current_user.username,
                            cookies=request.cookies)
 
-# === СПИСОК КОРИСТУВАЧІВ (Лаб 9, п.6 - захищений) ===
 @users_bp.route('/users')
 @login_required
 def users_list():
     users = db.session.scalars(select(User)).all()
-    return render_template('users/users_list.html', users=users, count=len(users))
+    return render_template('users/users_list.html', users=users, users_count=len(users))
 
-# === РОБОТА З КУКІ (Лаб 4) ===
+# === РОБОТА З КУКІ 
+
 @users_bp.route('/add-cookie', methods=['POST'])
 def add_cookie():
     if not current_user.is_authenticated:
