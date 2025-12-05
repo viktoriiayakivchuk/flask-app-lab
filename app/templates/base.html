@@ -34,6 +34,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('posts.get_posts') }}">Пости</a>
                     </li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('expenses_bp.get_expenses') }}">Витрати</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 
                 <ul class="navbar-nav">

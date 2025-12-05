@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.posts.models import Post
+    from app.expenses.models import Expense
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -24,7 +25,8 @@ class User(db.Model, UserMixin):
     last_seen: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     
     posts: Mapped[list["Post"]] = relationship(back_populates="user", cascade="all, delete-orphan")
-
+    expenses: Mapped[list["Expense"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.username}')>"
     

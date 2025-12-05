@@ -1,7 +1,6 @@
-# app/__init__.py
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from .config import config_map # config.py знаходиться у папці app/
+from .config import config_map 
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
@@ -31,27 +30,21 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
     bcrypt.init_app(app)
 
     login_manager.init_app(app)
-    # Вказуємо функцію-view для логіну (назва блюпринта.функція)
     login_manager.login_view = 'users_bp.login' 
     login_manager.login_message = 'Будь ласка, увійдіть, щоб отримати доступ до цієї сторінки.'
     login_manager.login_message_category = 'info'
 
-    # --- РЕЄСТРАЦІЯ ОБРОБНИКА ПОМИЛОК (404) ---
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('404.html'), 404
-    # -------------------------------------------
 
     with app.app_context():
-        # 1. Ваш головний blueprint (resume, contacts)
         from . import views as main_blueprint
         app.register_blueprint(main_blueprint.main_bp)
         
-        # 2. ВАШ 'users_bp'
         from .users.views import users_bp
         app.register_blueprint(users_bp)
         
-        # 3. ВАШ 'post_bp'
         from .posts import post_bp
         app.register_blueprint(post_bp, url_prefix="/posts")
 
@@ -59,13 +52,13 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
         from .products import products_bp
         app.register_blueprint(products_bp)   
 
-        from .products import models
-        
-        # === НОВИЙ РЯДОК (Частина 4) ===
-        # (Імпортуємо моделі з 'posts', як ви і запропонували)
-        from .posts import models 
-        # (Якщо у 'users' з'являться моделі, ми додамо тут 'from .users import models')
+        from .expenses import expenses_bp
+        app.register_blueprint(expenses_bp)
 
+        from .products import models
+
+        from .posts import models 
         from .users import models
+        from .expenses import models
 
     return app

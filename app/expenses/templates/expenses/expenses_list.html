@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Мої Витрати{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Мої Витрати</h1>
+            <a href="{{ url_for('expenses_bp.create_expense') }}" class="btn btn-success">
+                + Додати витрату
+            </a>
+        </div>
+        <div class="card card-themed mb-4">
+            <div class="card-body">
+                <form method="GET" action="{{ url_for('expenses_bp.get_expenses') }}" class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" name="q" class="form-control" placeholder="Пошук витрат..." value="{{ search_query }}">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="sort" class="form-select" onchange="this.form.submit()">
+                            <option value="date" {% if request.args.get('sort') == 'date' %}selected{% endif %}>За датою</option>
+                            <option value="amount" {% if request.args.get('sort') == 'amount' %}selected{% endif %}>За сумою</option>
+                            <option value="category" {% if request.args.get('sort') == 'category' %}selected{% endif %}>За категорією</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Знайти</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card card-themed mb-4" style="max-width: 18rem;">
+            <div class="card-header card-header-themed">Загалом витрачено</div>
+            <div class="card-body">
+                <h3 class="card-title" style="color: var(--accent-color);">{{ total }} грн</h3>
+            </div>
+        </div>
+
+        {% if expenses %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-bordered table-themed">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Дата</th>
+                            <th>Категорія</th>
+                            <th>Призначення</th>
+                            <th>Сума</th>
+                            <th>Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td>{{ expense.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <span class="badge bg-secondary">
+                                    {{ expense.category.name }}
+                                </span>
+                            </td>
+                            <td>{{ expense.title }}</td>
+                            <td class="fw-bold" style="color: var(--primary-text-color);">{{ expense.amount }} грн</td>
+                            
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ url_for('expenses_bp.update_expense', id=expense.id) }}" class="btn btn-sm btn-outline-warning">
+                                        Редагувати
+                                    </a>
+                                    
+                                    <form action="{{ url_for('expenses_bp.delete_expense', id=expense.id) }}" method="POST">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Ви впевнені?')">
+                                            Видалити
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                У вас поки немає витрат. <a href="{{ url_for('expenses_bp.create_expense') }}" class="alert-link">Додайте першу!</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

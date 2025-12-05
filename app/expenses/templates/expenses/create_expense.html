@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "includes/_render_field.html" import render_field %}
+
+{% block title %}Додати витрату{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        
+        <div class="card card-themed shadow-sm">
+            <div class="card-header card-header-themed">
+                <h4 class="mb-0">Нова витрата</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    {{ render_field(form.title, placeholder="Наприклад: Кава з друзями") }}
+                    {{ render_field(form.category) }}
+                    {{ render_field(form.amount, placeholder="0.00") }}
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                        <a href="{{ url_for('expenses_bp.get_expenses') }}" class="btn btn-outline-secondary">Скасувати</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
